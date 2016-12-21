@@ -1,0 +1,60 @@
+.container {
+    width: 330px;
+    padding: 15px;
+    background-color: #151E29;
+    border-radius: 5px;
+    margin: auto;
+    margin-top: 35vh;
+    transform: translateY(-50%);
+    border-radius: 4px;
+}
+
+.chat {
+    height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto; 
+}
+
+input[type="text"] {
+    background-color: #1B2737 !important;
+    border-color: #1D8DEE;
+    color: white;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    display: none;
+}
+
+.right-comment, .left-comment {
+    width: 85%;
+    margin-bottom: 5px;
+}
+
+.comment {
+    display: inline-block;
+    max-width: 100%;
+    padding: 8px;
+}
+
+.left-comment .comment {
+    background-color: #efeef4;
+    border-radius: 5px 15px 15px 5px;
+}
+
+.right-comment .comment {
+    background-color: #1D8DEE;
+    color: white;
+    text-align: right;
+    border-radius: 15px 5px 5px 15px;
+}
+
+.left-comment {
+    float: left;
+    text-align: left;
+}
+
+.right-comment {
+    float: right;
+    text-align: right;
+}

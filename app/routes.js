@@ -12,8 +12,7 @@ module.exports = function (app, path, database) {
     });
 
     app.post('/request', function (req, res) {
-        console.log(req.body.text.split(" "));
-        database.ping(req.body.text.split(" "), function (err, data) {
+        database.request(req.body.request.split(" "), function (err, data) {
             if (!err) res.json(data);
             else console.error(err);
         });
