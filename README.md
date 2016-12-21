@@ -1,6 +1,6 @@
-# basic-node
+# Jarvis_2.0
 
-basic-node is my "Hello Wold !" node js server.
+Jarvis_2.0 is my jarvis IA server.
 
 ### Tech
 - [Node.js 7.0.0](https://nodejs.org/)
@@ -9,8 +9,8 @@ basic-node is my "Hello Wold !" node js server.
 
 ```
 cd <project root path>
-git clone https://github.com/simflouzz59/basic-node
-cd basic-node
+git clone https://github.com/simflouzz59/Jarvis_2.0
+cd Jarvis_2.0
 node server.js
 ```
 

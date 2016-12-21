@@ -11,8 +11,12 @@ module.exports = function (app, path, database) {
         res.json("Hello Wold !");
     });
 
-    app.post('/hello', function (req, res) {
-        res.json(req.body.name);
+    app.post('/request', function (req, res) {
+        console.log(req.body.text.split(" "));
+        database.ping(req.body.text.split(" "), function (err, data) {
+            if (!err) res.json(data);
+            else console.error(err);
+        });
     });
 
     app.get('/', function (req, res) {
