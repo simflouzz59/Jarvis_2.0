@@ -1,0 +1,6 @@
+echo "# basic-node" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/simflouzz59/basic-node.git
+git push -u origin master

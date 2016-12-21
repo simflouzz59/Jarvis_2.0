@@ -1,0 +1,6 @@
+{
+    "host": "localhost",
+    "user": "basic-node",
+    "password": "42",
+    "database": "basic-node-db"
+}
