@@ -11,9 +11,11 @@ $('form').submit(function (event) {
         $.post("/request", $("form").serialize(), function (resp) {
             $('input[type="text"]').val("");
             var idx = Math.floor((Math.random() * resp.length));
-            var leftComment = "<div class=\"left-comment\"><div class=\"comment\">" + resp[idx].libelle + "</div></div>";
-            $('.chat').html($('.chat').html() + leftComment);
-            $(".chat").scrollTop($(".chat")[0].scrollHeight);
+            if(resp[idx] != undefined){
+                var leftComment = "<div class=\"left-comment\"><div class=\"comment\">" + resp[idx].response_libelle + "</div></div>";
+                $('.chat').html($('.chat').html() + leftComment);
+                $(".chat").scrollTop($(".chat")[0].scrollHeight);
+            } 
         });
     }
 });

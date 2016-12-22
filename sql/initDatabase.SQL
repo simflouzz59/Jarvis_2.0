@@ -60,9 +60,11 @@ CREATE TABLE IF NOT EXISTS ACTION_RESPONSE (
 );
 
 /* Request for get the action id and the response libelle since a word array and a ISO langage code */
-SELECT a.id, a.type, r.libelle, count(*)
-FROM action a INNER JOIN word w
-ON a.word_id = w.id
+SELECT a.name AS action_name, a.type AS action_type, r.libelle AS response_libelle, count(*) AS matching_count
+FROM action a INNER JOIN WORD_ACTION wa
+ON wa.action_id = a.id
+INNER JOIN word w
+ON wa.word_id = w.id
 INNER JOIN ACTION_RESPONSE ar 
 ON ar.action_id = a.id
 INNER JOIN RESPONSE r
@@ -73,7 +75,7 @@ WHERE w.libelle IN ('hello')
 AND l.code = 'en'
 AND w.lang_id = l.id
 GROUP BY a.id, r.id
-ORDER BY count(*) desc; -- Ne recuperer que les lignes avec le max de mots
+ORDER BY count(*) desc, a.name asc; -- Ne recuperer que les lignes avec le max de mots
 
 /* SELECT all action */
 SELECT a.id, a.name, a.libelle, a.type, count(DISTINCT wa.id) AS word_count, count(DISTINCT ar.id) AS response_count FROM action a
