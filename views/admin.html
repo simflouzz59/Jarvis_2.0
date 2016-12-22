@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>basic-node</title>
+    <link href="../public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../public/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../public/css/admin.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Jarvis_2.0-Admin</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Page 1</a></li>
+                <li><a href="#">Page 2</a></li>
+                <li><a href="#">Page 3</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="advancedActionSearchModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="listActionContainer" class="container visible">
+        <form id="actionSearchForm" class="form-inline">
+            <input type="search" class="form-control" oninput="actionSearch()" name="actionName">
+            <button class="btn btn-default" data-toggle="modal" data-target="#advancedActionSearchModal">Advanced</button>
+        </form>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Libelle</th>
+                    <th>Type</th>
+                    <th>Response count</th>
+                    <th>Word count</th>
+                </tr>
+            </thead>
+            <tbody id="actionSearchResult">
+            </tbody>
+        </table>
+    </div>
+    <div id="actionContainer" class="container">
+        <form id="actionUpdateForm" class="form">
+            <input type="hidden" name="actionSelected">
+            <input type="text" class="form-control" id="actionName" name="actionName">
+            <textarea class="form-control" id="actionLibelle" name="actionLibelle"></textarea>
+            <button type="submit" class="btn btn-default">Update</button>
+            <button type="button" class="btn btn-danger">Delete</button>
+        </form>
+        <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#wordActionList">Words</button>
+        <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#responseActionList">Responses</button>
+        <div id="wordActionList" class="collapse">
+            <form id="wordActionSearchForm" class="form">
+                <input type="hidden" name="actionSelected">
+                <input type="search" class="form-control" oninput="wordActionSearch()" name="wordLibelle" placeholder="Search word ...">
+            </form>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Libelle</th>
+                        <th>Lang</th>
+                    </tr>
+                </thead>
+                <tbody id="wordActionSearchResult">
+                </tbody>
+            </table>
+        </div>
+        <div id="responseActionList" class="collapse">
+            <form id="responseActionSearchForm" class="form">
+                <input type="hidden" name="actionSelected">
+                <input type="search" class="form-control" oninput="responseActionSearch()" name="responseLibelle" placeholder="Search response ...">
+            </form>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Libelle</th>
+                        <th>Lang</th>
+                    </tr>
+                </thead>
+                <tbody id="responseActionSearchResult">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../public/js/jquery-3.1.1.min.js"></script>
+    <script src="../public/js/bootstrap.min.js"></script>
+    <script src="../public/js/admin.js"></script>
+</body>
+
+</html>

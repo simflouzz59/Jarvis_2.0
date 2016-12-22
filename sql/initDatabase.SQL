@@ -27,9 +27,9 @@ CREATE TABLE IF NOT EXISTS WORD (
 
 CREATE TABLE IF NOT EXISTS ACTION (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name VARCHAR(99) NOT NULL UNIQUE,
+    libelle VARCHAR(999) NOT NULL,
     type INT UNSIGNED NOT NULL,
-    word_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY (word_id) REFERENCES WORD(id),
     PRIMARY KEY (id)
 );
 
@@ -38,6 +38,15 @@ CREATE TABLE IF NOT EXISTS RESPONSE (
     libelle VARCHAR(99) NOT NULL UNIQUE,
     lang_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (lang_id) REFERENCES LANG(id),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS WORD_ACTION (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    word_id INT UNSIGNED NOT NULL,
+    action_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (word_id) REFERENCES WORD(id),
+    FOREIGN KEY (action_id) REFERENCES ACTION(id),
     PRIMARY KEY (id)
 );
 
@@ -66,6 +75,25 @@ AND w.lang_id = l.id
 GROUP BY a.id, r.id
 ORDER BY count(*) desc; -- Ne recuperer que les lignes avec le max de mots
 
+/* SELECT all action */
+SELECT a.id, a.name, a.libelle, a.type, count(DISTINCT wa.id) AS word_count, count(DISTINCT ar.id) AS response_count FROM action a
+INNER JOIN ACTION_RESPONSE ar
+on a.id = ar.action_id
+INNER JOIN WORD_ACTION wa
+ON a.id = wa.action_id
+WHERE lower(name) LIKE lower('%' 's' '%')
+GROUP by a.id;
+
+/* SELECT word by action */
+SELECT w.id AS word_id, w.libelle AS word_libelle, l.code AS lang_code
+FROM WORD w 
+INNER JOIN LANG l
+ON w.lang_id = l.id
+INNER JOIN WORD_ACTION wa
+ON wa.word_id = w.id
+WHERE wa.action_id = ?
+AND lower(w.libelle) LIKE lower('%' ? '%');
+
 /* Code */
 INSERT INTO LANG(code) VALUES ('fr'); -- lang_id = 1
 INSERT INTO LANG(code) VALUES ('en'); -- lang_id = 2
@@ -74,9 +102,8 @@ INSERT INTO LANG(code) VALUES ('en'); -- lang_id = 2
 INSERT INTO WORD(libelle, lang_id) VALUES ('hello', 2); -- word_id = 1
 INSERT INTO WORD(libelle, lang_id) VALUES ('hi', 2); -- word_id = 2
 
-INSERT INTO ACTION(type, word_id) VALUES (1, 1); -- action_id = 1 
-INSERT INTO ACTION(type, word_id) VALUES (1, 2); -- action_id = 2
-INSERT INTO ACTION(type, word_id) VALUES (2, 2); -- action_id = 3
+INSERT INTO ACTION(name, libelle, type) VALUES ('sayHello', 'Say Hello or Hi', 1); -- action_id = 1 
+INSERT INTO ACTION(name, libelle, type) VALUES ('sayHelloWithName', 'Say Hello or Hi with userName', 2); -- action_id = 2
 
 INSERT INTO RESPONSE(libelle, lang_id) VALUES ('Hello !', 2); -- response_id = 1
 INSERT INTO RESPONSE(libelle, lang_id) VALUES ('How are you ?', 2); -- response_id = 2
@@ -84,8 +111,13 @@ INSERT INTO RESPONSE(libelle, lang_id) VALUES ('Hi !', 2); -- response_id = 3
 INSERT INTO RESPONSE(libelle, lang_id) VALUES ('Hi bro :)', 2); -- response_id = 4
 INSERT INTO RESPONSE(libelle, lang_id) VALUES ('Hi ? !', 2); -- response_id = 5
 
+INSERT INTO WORD_ACTION(word_id, action_id) VALUES (1, 1);
+INSERT INTO WORD_ACTION(word_id, action_id) VALUES (1, 2);
+INSERT INTO WORD_ACTION(word_id, action_id) VALUES (2, 1);
+INSERT INTO WORD_ACTION(word_id, action_id) VALUES (2, 2);
+
 INSERT INTO ACTION_RESPONSE(action_id, response_id) VALUES (1, 1);
 INSERT INTO ACTION_RESPONSE(action_id, response_id) VALUES (1, 2);
 INSERT INTO ACTION_RESPONSE(action_id, response_id) VALUES (2, 3);
 INSERT INTO ACTION_RESPONSE(action_id, response_id) VALUES (2, 4);
-INSERT INTO ACTION_RESPONSE(action_id, response_id) VALUES (3, 5);
+INSERT INTO ACTION_RESPONSE(action_id, response_id) VALUES (2, 5);

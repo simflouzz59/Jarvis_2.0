@@ -1,0 +1,56 @@
+body {
+    background-color: #151E29;
+}
+
+.navbar-inverse, tr:hover {
+    background-color: #1B2737 !important;
+}
+
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav>li>a, table {
+    color: white !important;
+}
+
+.container {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    padding-top: 15px;
+}
+
+.container:not(.visible) {
+    display: none;
+}
+
+input, textarea {
+    background-color: #1B2737 !important;
+    border-color: #1D8DEE !important;
+    color: white !important;
+}
+
+.btn-default {
+    background-color: #1D8DEE !important;
+    color: white !important;
+    border: none !important;
+}
+
+th {
+    text-align: center;
+}
+
+table {
+    margin-top: 15px;
+    /*border-radius: 4px !important;*/
+    border: 1px solid white;
+}
+
+#actionUpdateForm {
+    width: 350px;
+    margin: auto;
+}
+
+#actionUpdateForm input , #actionUpdateForm textarea {
+    margin-bottom: 15px;
+} 
