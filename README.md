@@ -16,8 +16,8 @@ node server.js
 
 ### Navigation
 
-(http://localhost:8080/)
+[http://localhost:8080/]
 
-(http://localhost:8080/admin)
+[http://localhost:8080/admin]
 
 Readme created with http://dillinger.io/
