@@ -13,8 +13,23 @@ module.exports = function (app, path, database) {
 
     app.post('/request', function (req, res) {
         database.request(req.body.request.split(" "), function (err, data) {
-            if (!err) res.json(data);
-            else console.error(err);
+            if (!err) {
+                var plugin;
+                if(data.length == 0){
+                    plugin = require(path.resolve(__dirname + '/../plugins/notFound'));
+                    plugin.action(req, function (response){
+                        res.json(response);
+                    });
+                } else {
+                    /* Charger le plugin */
+                    plugin = require(path.resolve(__dirname + '/../plugins/' + data[0].action_name));
+                    /* rediger la reponse */
+                    plugin.action(req, function (response){
+                        // validate response
+                        res.json(response);
+                    });
+                }
+            } else console.error(err);
         });
     });
 
