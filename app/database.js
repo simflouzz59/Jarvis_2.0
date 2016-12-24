@@ -3,9 +3,18 @@ var mysql = require('mysql');
 var connection;
 
 const sql = "SELECT sysdate() sysdate;";
-const getPossibleResponse = "SELECT a.name AS action_name, count(*) AS matching_count FROM action a INNER JOIN WORD_ACTION wa ON wa.action_id = a.id INNER JOIN word w ON wa.word_id = w.id INNER JOIN LANG l ON w.lang_id = l.id WHERE w.libelle IN (?) AND l.code = 'en' GROUP BY a.id ORDER BY count(*) desc, a.name asc LIMIT 1;";
-const getActionsByName = "SELECT a.id, a.name, a.libelle, a.type, count(DISTINCT wa.id) AS word_count, count(DISTINCT ar.id) AS response_count FROM action a INNER JOIN ACTION_RESPONSE ar on a.id = ar.action_id INNER JOIN WORD_ACTION wa ON a.id = wa.action_id WHERE lower(name) LIKE lower('%' ? '%') GROUP by a.id;";
-const getWordActionByActionAndLibelle = "SELECT w.id AS word_id, w.libelle AS word_libelle, l.code AS lang_code FROM WORD w INNER JOIN LANG l ON w.lang_id = l.id INNER JOIN WORD_ACTION wa ON wa.word_id = w.id WHERE wa.action_id = ? AND lower(w.libelle) LIKE lower('%' ? '%');";
+
+const requestSQL = "SELECT action_name, matching_count FROM ( SELECT a.name AS action_name, count(*) AS matching_count FROM action a INNER JOIN WORD_ACTION wa ON wa.action_id = a.id INNER JOIN word w ON wa.word_id = w.id INNER JOIN LANG l ON w.lang_id = l.id WHERE w.libelle IN (?) AND l.code = 'en' GROUP BY a.id ORDER BY count(*) desc, a.name asc ) req HAVING matching_count = MAX(matching_count);";
+
+const actionSearchSQL = "SELECT a.id AS action_id, a.name AS action_name, a.libelle AS action_libelle, count(DISTINCT wa.id) AS word_count FROM action a INNER JOIN WORD_ACTION wa ON a.id = wa.action_id WHERE lower(a.name) LIKE lower('%' ? '%') GROUP by a.id;";
+
+const wordActionSearchSQL = "SELECT w.id AS word_id, w.libelle AS word_libelle, l.code AS lang_code FROM WORD w INNER JOIN LANG l ON w.lang_id = l.id INNER JOIN WORD_ACTION wa ON wa.word_id = w.id WHERE wa.action_id = ? AND lower(w.libelle) LIKE lower('%' ? '%');";
+
+const getAllLangagesSQL = "SELECT id AS lang_id, code AS lang_code FROM LANG ORDER BY code ASC;";
+
+const loginSQL = "SELECT * FROM USER WHERE lower(userName) = lower(?);";
+
+const getUserByIdSQL = "SELECT * FROM USER WHERE id = ?;";
 
 connection = mysql.createConnection({
     host: 'localhost',
@@ -24,21 +33,42 @@ module.exports.ping = function (callback) {
 };
 
 module.exports.request = function (words, callback) {
-    connection.query(getPossibleResponse, words, function (err, rows, fields) {
+    connection.query(requestSQL, words, function (err, rows, fields) {
         if (err) callback(err, false);
         else callback(false, rows);
     });
 };
 
 module.exports.actionSearch = function (actionName, callback) {
-    connection.query(getActionsByName, actionName, function (err, rows, fields) {
+    connection.query(actionSearchSQL, actionName, function (err, rows, fields) {
         if (err) callback(err, false);
         else callback(false, rows);
     });
 }
 
 module.exports.wordActionSearch = function (actionId, wordLibelle, callback) {
-    connection.query(getWordActionByActionAndLibelle, [actionId, wordLibelle], function (err, rows, fields) {
+    connection.query(wordActionSearchSQL, [actionId, wordLibelle], function (err, rows, fields) {
+        if (err) callback(err, false);
+        else callback(false, rows);
+    });
+}
+
+module.exports.getAllLangages = function (callback) {
+    connection.query(getAllLangages, function (err, rows, fields) {
+        if (err) callback(err, false);
+        else callback(false, rows);
+    });
+}
+
+module.exports.login = function (data, callback) {
+    connection.query(loginSQL, data, function (err, rows, fields) {
+        if (err) callback(err, false);
+        else callback(false, rows);
+    });
+}
+
+module.exports.getUserById = function (data, callback) {
+    connection.query(getUserByIdSQL, data, function (err, rows, fields) {
         if (err) callback(err, false);
         else callback(false, rows);
     });

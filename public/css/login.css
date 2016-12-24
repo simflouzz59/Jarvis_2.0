@@ -1,0 +1,28 @@
+form {
+    width: 330px;
+    padding: 15px;
+    background-color: #151E29;
+    border-radius: 5px;
+    margin: auto;
+    margin-top: 35vh;
+    transform: translateY(-50%);
+}
+
+.btn-primary {
+    background-color: #1D8DEE;
+    color: white;
+    border: none;
+}
+
+input:focus { 
+  border-color: rgba(0, 122, 255, 0.8) !important;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(0, 122, 255, 0.6) !important;
+  outline: 0 none;
+}
+
+input {
+    background-color: #1B2737 !important;
+    border-color: #1D8DEE;
+    color: white;
+    margin-bottom: 5px;
+}

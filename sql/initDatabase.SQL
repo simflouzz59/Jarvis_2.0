@@ -50,6 +50,17 @@ CREATE TABLE IF NOT EXISTS WORD_ACTION (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS USER (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    userName VARCHAR(99) NOT NULL UNIQUE,
+    password VARCHAR(99) NOT NULL,
+    name VARCHAR(99),
+    admin INT UNSIGNED NOT NULL,
+    lang_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (lang_id) REFERENCES LANG(id),
+    PRIMARY KEY (id)
+);
+
 /*CREATE TABLE IF NOT EXISTS ACTION_RESPONSE (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     action_id INT UNSIGNED NOT NULL,
@@ -60,26 +71,28 @@ CREATE TABLE IF NOT EXISTS WORD_ACTION (
 );*/
 
 /* Request for get the action id and the response libelle since a word array and a ISO langage code */
-SELECT a.name AS action_name, count(*) AS matching_count
-FROM action a INNER JOIN WORD_ACTION wa
-ON wa.action_id = a.id
-INNER JOIN word w
-ON wa.word_id = w.id
-INNER JOIN LANG l
-ON w.lang_id = l.id
-WHERE w.libelle IN ('hello')
-AND l.code = 'en'
-GROUP BY a.id
-ORDER BY count(*) desc, a.name asc 
-LIMIT 1; -- Ne recuperer que les lignes avec le max de mots
+SELECT action_name, matching_count
+FROM (
+    SELECT a.name AS action_name, count(*) AS matching_count
+    FROM action a INNER JOIN WORD_ACTION wa
+    ON wa.action_id = a.id
+    INNER JOIN word w
+    ON wa.word_id = w.id
+    INNER JOIN LANG l
+    ON w.lang_id = l.id
+    WHERE w.libelle IN ('wake', 'up')
+    AND l.code = 'en'
+    GROUP BY a.id
+    ORDER BY count(*) desc, a.name asc
+) req
+HAVING matching_count = MAX(matching_count); -- Ne recuperer que les lignes avec le max de mots
 
 /* SELECT all action */
-SELECT a.id, a.name, a.libelle, a.type, count(DISTINCT wa.id) AS word_count, count(DISTINCT ar.id) AS response_count FROM action a
-INNER JOIN ACTION_RESPONSE ar
-on a.id = ar.action_id
+SELECT a.id AS action_id, a.name AS action_name, a.libelle AS action_libelle, count(DISTINCT wa.id) AS word_count 
+FROM action a
 INNER JOIN WORD_ACTION wa
 ON a.id = wa.action_id
-WHERE lower(name) LIKE lower('%' 's' '%')
+WHERE lower(a.name) LIKE lower('%' 's' '%')
 GROUP by a.id;
 
 /* SELECT word by action */
@@ -122,4 +135,4 @@ INSERT INTO WORD_ACTION(word_id, action_id) VALUES (12, 3);
 INSERT INTO WORD_ACTION(word_id, action_id) VALUES (13, 3);
 INSERT INTO WORD_ACTION(word_id, action_id) VALUES (14, 3);
 
-
+INSERT INTO USER (userName, password, name, lang_id, admin) VALUES ('simflouzz59', 'test1234', 'Tony', 1, 0);

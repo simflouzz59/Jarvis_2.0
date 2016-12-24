@@ -1,14 +1,30 @@
-module.exports = function (app, path, database) {
+module.exports = function (app, path, database, passport) {
 
-    app.get('/ping', function (req, res) {
-        database.ping(function (err, data) {
-            if (!err) res.json(data);
-            else console.error(err);
-        });
+    app.get('/login', function (req, res) {
+        if (req.isAuthenticated()) res.redirect('/');
+        else res.sendFile(path.resolve(__dirname + '/../views/login.html'));
     });
 
-    app.get('/hello', function (req, res) {
-        res.json("Hello Wold !");
+    app.post('/login', function (req, res, next) {
+        passport.authenticate('local', function (err, user, info) {
+            if (err) {
+                return console.error(err);
+            }
+            if (!user) {
+                return res.redirect('/login');
+            }
+            req.logIn(user, function (err) {
+                if (err) {
+                    return console.error(err);
+                }
+                return res.redirect('/');
+            });
+        })(req, res, next);
+    });
+
+    app.get('/logout', function (req, res) {
+        req.logout();
+        res.redirect('/login');
     });
 
     app.post('/request', function (req, res) {
@@ -21,8 +37,9 @@ module.exports = function (app, path, database) {
                         res.json(response);
                     });
                 } else {
+                    var actionSelected = Math.floor((Math.random() * data.length));
                     /* Charger le plugin */
-                    plugin = require(path.resolve(__dirname + '/../plugins/' + data[0].action_name));
+                    plugin = require(path.resolve(__dirname + '/../plugins/' + data[actionSelected].action_name));
                     /* rediger la reponse */
                     plugin.action(req, function (response){
                         // validate response
@@ -34,11 +51,13 @@ module.exports = function (app, path, database) {
     });
 
     app.get('/', function (req, res) {
-        res.sendFile(path.resolve(__dirname + '/../views/index.html'));
+         if (req.isAuthenticated()) res.sendFile(path.resolve(__dirname + '/../views/index.html'));
+         else res.redirect('/login');
     });
 
     app.get('/admin', function (req, res) {
-        res.sendFile(path.resolve(__dirname + '/../views/admin.html'));
+        if (req.isAuthenticated()) res.sendFile(path.resolve(__dirname + '/../views/admin.html'));
+        else res.redirect('/login');
     });
 
     app.post('/action/search', function (req, res) {
