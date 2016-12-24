@@ -1,5 +1,35 @@
+var recognizing = false;
+var start_timestamp;
+
 $(document).ready(function () {
     console.log("ready!");
+
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'fr-FR';
+
+    recognition.onstart = function () {
+        recognizing = true;
+    };
+
+    recognition.onerror = function (event) {
+        alert(event.error);
+    };
+
+    recognition.onend = function () {
+        recognizing = false;
+    };
+
+    recognition.onresult = function (event) {
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+                $('input[type="text"]').val($('input[type="text"]').val() + " " + event.results[i][0].transcript);
+            } else {
+                $('input[type="text"]').val($('input[type="text"]').val() + " " + event.results[i][0].transcript);
+            }
+        }
+    };
 });
 
 $('form').submit(function (event) {
@@ -19,3 +49,13 @@ $('form').submit(function (event) {
         });
     }
 });
+
+function voiceButton(event) {
+    if (recognizing) {
+        recognition.stop();
+        return;
+    }
+    recognition.start();
+    $('#voice').text("Stop");
+    start_timestamp = event.timeStamp;
+}
