@@ -1,5 +1,4 @@
 var recognizing = false;
-var start_timestamp;
 
 $(document).ready(function () {
     console.log("ready!");
@@ -26,7 +25,7 @@ $(document).ready(function () {
             if (event.results[i].isFinal) {
                 $('input[type="text"]').val($('input[type="text"]').val() + " " + event.results[i][0].transcript);
             } else {
-                $('input[type="text"]').val($('input[type="text"]').val() + " " + event.results[i][0].transcript);
+                //$('input[type="text"]').val($('input[type="text"]').val() + " " + event.results[i][0].transcript);
             }
         }
     };

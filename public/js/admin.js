@@ -14,19 +14,34 @@ $(document).ready(function () {
 });*/
 
 function actionSearch() {
-    $.post("/action/search", $("#actionSearchForm").serialize(), function (resp) {
+    $.post("/action/search", $("#userSearchForm").serialize(), function (resp) {
         //alert('ok');
         var htmlString = "";
         $.each(resp, function (i, item) {
-            htmlString += "<tr onclick=\"showAction(" + item.id + ", '" + item.name + "', '" + item.libelle + "')\">";
-            htmlString += "<td>" + item.name + "</td>";
-            htmlString += "<td>" + item.libelle + "</td>";
-            htmlString += "<td>" + item.type + "</td>";
+            htmlString += "<tr onclick=\"showAction(" + item.action_id + ", '" + item.action_name + "', '" + item.action_libelle + "')\">";
+            htmlString += "<td>" + item.action_name + "</td>";
+            htmlString += "<td>" + item.action_libelle + "</td>";
             htmlString += "<td>" + item.word_count + "</td>";
-            htmlString += "<td>" + item.response_count + "</td>";
             htmlString += "</tr>";
         });
         $('#actionSearchResult').html(htmlString);
+    });
+}
+
+function userSearch() {
+    $.get("/user/search", $("#userSearchForm").serialize(), function (resp) {
+        //alert('ok');
+        console.log(resp);
+        var htmlString = "";
+        $.each(resp, function (i, item) {
+            htmlString += "<tr onclick=\"alert(" + item.user_id + "')\">";
+            htmlString += "<td>" + item.user_username + "</td>";
+            htmlString += "<td>" + item.user_name + "</td>";
+            htmlString += "<td>" + item.user_admin + "</td>";
+            htmlString += "<td>" + item.lang_code + "</td>";
+            htmlString += "</tr>";
+        });
+        $('#userSearchResult').html(htmlString);
     });
 }
 
@@ -44,7 +59,7 @@ function wordActionSearch() {
         //alert('ok');
         var htmlString = "";
         $.each(resp, function (i, item) {
-            htmlString += "<tr onclick='alert(" + item.word_id + ")'>";
+            htmlString += "<tr data-toggle=\"context\" data-target=\"#contextMenuWord\">";
             htmlString += "<td>" + item.word_libelle + "</td>";
             htmlString += "<td>" + item.lang_code + "</td>";
             htmlString += "</tr>";
@@ -65,4 +80,20 @@ function responseActionSearch() {
         });
         $('#responseActionSearchResult').html(htmlString);
     });
+}
+
+function showActionSearch() {
+    $('.visible').removeClass("visible");
+    $('#listActionContainer').addClass("visible");
+    $('.active').removeClass("active");
+    $('#navAction').addClass("active");
+    actionSearch();
+}
+
+function showUserSearch() {
+    $('.visible').removeClass("visible");
+    $('#userContainer').addClass("visible");
+    $('.active').removeClass("active");
+    $('#navUser').addClass("active");
+    userSearch();
 }

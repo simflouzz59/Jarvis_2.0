@@ -46,11 +46,19 @@ table {
     border: 1px solid white;
 }
 
+ #actionSearchForm {
+     display: inline-block;
+ }
+
 #actionUpdateForm {
     width: 350px;
     margin: auto;
 }
 
-#actionUpdateForm input , #actionUpdateForm textarea {
-    margin-bottom: 15px;
+#actionUpdateForm input , #actionUpdateForm textarea, #actionContainer button {
+    margin-bottom: 15px !important;
 } 
+
+.float-right {
+    float: right;
+}

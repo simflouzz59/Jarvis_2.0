@@ -28,12 +28,13 @@ module.exports = function (app, path, database, passport) {
     });
 
     app.post('/request', function (req, res) {
-        database.request(req.body.request.split(" "), function (err, data) {
+        //if (!req.isAuthenticated()) res.sendFile(path.resolve(__dirname + '/../views/forbidden.html'), 403);
+        database.request(req.body.request.replace(/[^a-zA-Z0-9]/g,' ').trim().split(" "), function (err, data) {
             if (!err) {
                 var plugin;
-                if(data.length == 0){
+                if (data.length == 0) {
                     plugin = require(path.resolve(__dirname + '/../plugins/notFound'));
-                    plugin.action(req, function (response){
+                    plugin.action(req, function (response) {
                         res.json(response);
                     });
                 } else {
@@ -41,7 +42,7 @@ module.exports = function (app, path, database, passport) {
                     /* Charger le plugin */
                     plugin = require(path.resolve(__dirname + '/../plugins/' + data[actionSelected].action_name));
                     /* rediger la reponse */
-                    plugin.action(req, function (response){
+                    plugin.action(req, function (response) {
                         // validate response
                         res.json(response);
                     });
@@ -51,8 +52,8 @@ module.exports = function (app, path, database, passport) {
     });
 
     app.get('/', function (req, res) {
-         if (req.isAuthenticated()) res.sendFile(path.resolve(__dirname + '/../views/index.html'));
-         else res.redirect('/login');
+        if (req.isAuthenticated()) res.sendFile(path.resolve(__dirname + '/../views/index.html'));
+        else res.redirect('/login');
     });
 
     app.get('/admin', function (req, res) {
@@ -75,14 +76,23 @@ module.exports = function (app, path, database, passport) {
     });
 
     app.post('/action/search/response', function (req, res) {
-        console.log(req.body.actionSelected + " " + req.body.reponseLibelle);
         database.responseActionSearch(req.body.actionSelected, req.body.responseLibelle, function (err, data) {
             if (!err) res.json(data);
             else console.error(err);
         });
     });
 
+    app.get('/user/search', function (req, res) {
+        database.userSearch(req.query.userName, function (err, data) {
+            if (!err) res.json(data);
+            else console.error(err);
+        });
+    });
+
+
+
     app.get('*', function (req, res) {
+        //if (!req.isAuthenticated()) res.sendFile(path.resolve(__dirname + '/../views/forbidden.html'), 403);
         res.redirect('/');
         //res.send('You shall not pass !', 404);
     });

@@ -63,3 +63,15 @@ input[type="text"] {
     width: 100%;
     border-radius: 5px 15px 15px 5px;
 }
+
+.form-control {
+    padding-right: 30px; 
+}
+
+.fa-microphone {
+    position: absolute;
+    right: 25px;
+    bottom: 22px;
+    color: white;
+    font-size: 20px;
+}

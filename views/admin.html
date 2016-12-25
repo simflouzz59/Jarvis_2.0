@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>basic-node</title>
+    <title>Jarvis_2.0-Admin</title>
     <link href="../public/css/bootstrap.min.css" rel="stylesheet">
     <link href="../public/css/font-awesome.min.css" rel="stylesheet">
     <link href="../public/css/admin.css" rel="stylesheet">
@@ -16,18 +16,16 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                 <a class="navbar-brand" href="#">Jarvis_2.0-Admin</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">Page 1</a></li>
-                    <li><a href="#">Page 2</a></li>
-                    <li><a href="#">Page 3</a></li>
+                    <li id="navAction" class="active" onclick="showActionSearch()"><a>Actions</a></li>
+                    <li id="navUser" onclick="showUserSearch()"><a href="#">Users</a></li>
                 </ul>
             </div>
         </div>
@@ -50,16 +48,14 @@
     </div>
     <div id="listActionContainer" class="container visible">
         <form id="actionSearchForm" class="form-inline">
-            <input type="search" class="form-control" oninput="actionSearch()" name="actionName">
-            <button class="btn btn-default" data-toggle="modal" data-target="#advancedActionSearchModal">Advanced</button>
+            <input type="search" class="form-control" oninput="actionSearch()" placeholder="actionName" name="actionName">
         </form>
+        <button class="btn btn-default" data-toggle="modal" data-target="#advancedActionSearchModal">Advanced</button>
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Name</th>
                     <th>Libelle</th>
-                    <th>Type</th>
-                    <th>Response count</th>
                     <th>Word count</th>
                 </tr>
             </thead>
@@ -70,18 +66,23 @@
     <div id="actionContainer" class="container">
         <form id="actionUpdateForm" class="form">
             <input type="hidden" name="actionSelected">
-            <input type="text" class="form-control" id="actionName" name="actionName">
-            <textarea class="form-control" id="actionLibelle" name="actionLibelle"></textarea>
-            <button type="submit" class="btn btn-default">Update</button>
-            <button type="button" class="btn btn-danger">Delete</button>
+            <input type="text" class="form-control" id="actionName" placeholder="actionName" name="actionName">
+            <textarea class="form-control" id="actionLibelle" placeholder="actionLibelle" name="actionLibelle"></textarea>
         </form>
-        <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#wordActionList">Words</button>
-        <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#responseActionList">Responses</button>
-        <div id="wordActionList" class="collapse">
-            <form id="wordActionSearchForm" class="form">
+        <button type="submit" class="btn btn-default">Update</button>
+        <button type="button" class="btn btn-danger">Delete</button>
+        <div id="wordActionList">
+            <form id="wordActionSearchForm" class="form form-inline">
                 <input type="hidden" name="actionSelected">
-                <input type="search" class="form-control" oninput="wordActionSearch()" name="wordLibelle" placeholder="Search word ...">
+                <input type="search" class="form-control" oninput="wordActionSearch()" name="wordLibelle" placeholder="wordLibelle">
+                <select class="form-control" id="sel1">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                </select>
             </form>
+            <button type="button" class="btn btn-default float-right">Add</button>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -93,9 +94,41 @@
                 </tbody>
             </table>
         </div>
+        <div id="contextMenuWord">
+            <ul class="dropdown-menu" role="menu">
+                <li><a tabindex="-1" href="#">Edit word</a></li>
+                <li><a tabindex="-1" href="#">Remove action link</a></li>
+                <li><a tabindex="-1" href="#">Remove word</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="userContainer" class="container">
+        <form id="userSearchForm" class="form-inline">
+            <input type="search" class="form-control" oninput="userSearch()" placeholder="userName" name="userName">
+        </form>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>userName</th>
+                    <th>Name</th>
+                    <th>Admin</th>
+                    <th>Lang</th>
+                </tr>
+            </thead>
+            <tbody id="userSearchResult">
+            </tbody>
+        </table>
+        <div id="contextMenuUser">
+            <ul class="dropdown-menu" role="menu">
+                <li><a tabindex="-1" href="#">Edit word</a></li>
+                <li><a tabindex="-1" href="#">Remove action link</a></li>
+                <li><a tabindex="-1" href="#">Remove word</a></li>
+            </ul>
+        </div>
     </div>
     <script src="../public/js/jquery-3.1.1.min.js"></script>
     <script src="../public/js/bootstrap.min.js"></script>
+    <script src="../public/js/context-menu.js"></script>
     <script src="../public/js/admin.js"></script>
 </body>
 

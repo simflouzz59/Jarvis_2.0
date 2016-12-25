@@ -22,7 +22,7 @@ input:focus {
 
 input {
     background-color: #1B2737 !important;
-    border-color: #1D8DEE;
-    color: white;
+    border-color: #1D8DEE !important;
+    color: white !important;
     margin-bottom: 5px;
 }

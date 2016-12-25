@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS WORD_ACTION (
 
 CREATE TABLE IF NOT EXISTS USER (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    userName VARCHAR(99) NOT NULL UNIQUE,
+    username VARCHAR(99) NOT NULL UNIQUE,
     password VARCHAR(99) NOT NULL,
     name VARCHAR(99),
     admin INT UNSIGNED NOT NULL,
@@ -80,7 +80,7 @@ FROM (
     ON wa.word_id = w.id
     INNER JOIN LANG l
     ON w.lang_id = l.id
-    WHERE w.libelle IN ('wake', 'up')
+    WHERE w.libelle IN ('White', 'Daddy', 's', 'home')
     AND l.code = 'en'
     GROUP BY a.id
     ORDER BY count(*) desc, a.name asc
@@ -104,6 +104,13 @@ INNER JOIN WORD_ACTION wa
 ON wa.word_id = w.id
 WHERE wa.action_id = ?
 AND lower(w.libelle) LIKE lower('%' ? '%');
+
+/* SELECT user by userName */
+SELECT u.id AS user_id, u.username AS user_username, u.name AS user_name, u.admin AS user_admin,  l.code AS lang_code
+FROM user u
+INNER JOIN LANG l
+ON u.lang_id = l.id
+WHERE lower(u.username) LIKE lower('%' ? '%');
 
 /* Code */
 INSERT INTO LANG(code) VALUES ('fr'); -- lang_id = 1

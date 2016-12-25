@@ -1,0 +1,17 @@
+body {
+    background-color: #151E29;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+}
+
+img {
+    display: block;
+    margin: auto;
+    margin-top: 50vh;
+    transform: translateY(-50%);
+    width: 50%;
+}
