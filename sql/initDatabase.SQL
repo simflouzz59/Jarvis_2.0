@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS WORD_ACTION (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     word_id INT UNSIGNED NOT NULL,
     action_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY (word_id) REFERENCES WORD(id),
-    FOREIGN KEY (action_id) REFERENCES ACTION(id),
+    FOREIGN KEY (word_id) REFERENCES WORD(id) ON DELETE CASCADE,
+    FOREIGN KEY (action_id) REFERENCES ACTION(id) ON DELETE CASCADE,
     PRIMARY KEY (id)
 );
 
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS USER (
     username VARCHAR(99) NOT NULL UNIQUE,
     password VARCHAR(99) NOT NULL,
     name VARCHAR(99),
-    admin INT UNSIGNED NOT NULL,
+    admin INT UNSIGNED NOT NULL DEFAULT 1,
     lang_id INT UNSIGNED NOT NULL,
     FOREIGN KEY (lang_id) REFERENCES LANG(id),
     PRIMARY KEY (id)
@@ -135,7 +135,7 @@ INSERT INTO WORD(libelle, lang_id) VALUES ('up', 2); -- word_id = 4
 INSERT INTO WORD(libelle, lang_id) VALUES ('dad', 2); -- word_id = 5
 INSERT INTO WORD(libelle, lang_id) VALUES ('home', 2); -- word_id = 6
 
-INSERT INTO ACTION(name, libelle, type) VALUES ('jarvis', 'Sould I stay or should I go Iron man 2 scene', 2); -- action_id = 2
+INSERT INTO ACTION(name, libelle) VALUES ('jarvis', 'Sould I stay or should I go Iron man 2 scene'); -- action_id = 2
 
 INSERT INTO WORD_ACTION(word_id, action_id) VALUES (11, 3);
 INSERT INTO WORD_ACTION(word_id, action_id) VALUES (12, 3);

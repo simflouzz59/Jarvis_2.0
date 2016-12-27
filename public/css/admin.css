@@ -1,4 +1,4 @@
-body {
+body, .modal-content {
     background-color: #151E29;
 }
 
@@ -55,10 +55,15 @@ table {
     margin: auto;
 }
 
-#actionUpdateForm input , #actionUpdateForm textarea, #actionContainer button {
+#actionUpdateForm input, #actionUpdateForm textarea, #actionContainer button, #actionCreateForm input {
     margin-bottom: 15px !important;
 } 
 
 .float-right {
     float: right;
+}
+
+.close {
+    color: white;
+    text-shadow: 0 1px 0 #000;
 }

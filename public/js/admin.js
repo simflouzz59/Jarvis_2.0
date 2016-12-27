@@ -1,6 +1,7 @@
 $(document).ready(function () {
     console.log("ready!");
     actionSearch();
+    getLanguages();
 });
 
 /*$('#actionSearchForm').submit(function (event) {
@@ -14,7 +15,7 @@ $(document).ready(function () {
 });*/
 
 function actionSearch() {
-    $.post("/action/search", $("#userSearchForm").serialize(), function (resp) {
+    $.post("/action/search", $("#actionSearchForm").serialize(), function (resp) {
         //alert('ok');
         var htmlString = "";
         $.each(resp, function (i, item) {
@@ -48,7 +49,7 @@ function userSearch() {
 function showAction(actionId, actionName, actionLibelle) {
     $('#listActionContainer').removeClass("visible");
     $('#actionContainer').addClass("visible");
-    $('input[name="actionSelected"]').val(actionId);
+    $('input[name="actionId"]').val(actionId);
     $('#actionName').val(actionName);
     $('#actionLibelle').val(actionLibelle);
     wordActionSearch();
@@ -56,7 +57,6 @@ function showAction(actionId, actionName, actionLibelle) {
 
 function wordActionSearch() {
     $.post("/action/search/word", $("#wordActionSearchForm").serialize(), function (resp) {
-        //alert('ok');
         var htmlString = "";
         $.each(resp, function (i, item) {
             htmlString += "<tr data-toggle=\"context\" data-target=\"#contextMenuWord\">";
@@ -79,6 +79,54 @@ function responseActionSearch() {
             htmlString += "</tr>";
         });
         $('#responseActionSearchResult').html(htmlString);
+    });
+}
+
+function createAction() {
+    $.ajax({
+        url: "/action/create",
+        method: "POST",
+        data: $("#actionCreateForm").serialize(),
+        success: function (resp) {
+            actionSearch();
+            $("#actionCreateForm input").val("");
+            $("#actionCreateModal").modal('hide');
+        }
+    });
+}
+
+function updateAction() {
+    $.ajax({
+        url: "/action/update",
+        method: "PUT",
+        data: $("#actionUpdateForm").serialize(),
+        success: function (resp) {
+            alert('ok');
+        }
+    });
+}
+
+function deleteAction() {
+    if (confirm("Are you sure to delete this action ?")) {
+        $.ajax({
+            url: "/action/delete",
+            method: "DELETE",
+            data: $("#actionUpdateForm").serialize(),
+            success: function (resp) {
+                actionSearch();
+                showActionSearch();
+            }
+        });
+    }
+}
+
+function getLanguages() {
+    $.get("/lang", $("#userSearchForm").serialize(), function (resp) {
+        var htmlString = "<option value=''>All</option>";
+        $.each(resp, function (i, item) {
+            htmlString += "<option value='" + item.lang_id + "'>" + item.lang_code + "</option>";
+        });
+        $('.lang-select').html(htmlString);
     });
 }
 

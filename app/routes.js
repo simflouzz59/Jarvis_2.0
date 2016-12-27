@@ -69,14 +69,7 @@ module.exports = function (app, path, database, passport) {
     });
 
     app.post('/action/search/word', function (req, res) {
-        database.wordActionSearch(req.body.actionSelected, req.body.wordLibelle, function (err, data) {
-            if (!err) res.json(data);
-            else console.error(err);
-        });
-    });
-
-    app.post('/action/search/response', function (req, res) {
-        database.responseActionSearch(req.body.actionSelected, req.body.responseLibelle, function (err, data) {
+        database.wordActionSearch(req.body.actionId, req.body.wordLibelle, function (err, data) {
             if (!err) res.json(data);
             else console.error(err);
         });
@@ -89,7 +82,33 @@ module.exports = function (app, path, database, passport) {
         });
     });
 
+    app.post('/action/create', function (req, res) {
+        database.createAction([req.body.actionName, req.body.actionLibelle], function (err, data) {
+            if (!err) res.json(data);
+            else console.error(err);
+        });
+    });
 
+    app.put('/action/update', function (req, res) {
+        database.updateAction([req.body.actionName, req.body.actionLibelle, req.body.actionId], function (err, data) {
+            if (!err) res.json(data);
+            else console.error(err);
+        });
+    });
+
+    app.delete('/action/delete', function (req, res) {
+        database.deleteAction([req.body.actionId], function (err, data) {
+            if (!err) res.json(data);
+            else console.error(err);
+        });
+    });
+
+    app.get('/lang', function (req, res) {
+        database.getAllLang(function (err, data) {
+            if (!err) res.json(data);
+            else console.error(err);
+        });
+    });
 
     app.get('*', function (req, res) {
         //if (!req.isAuthenticated()) res.sendFile(path.resolve(__dirname + '/../views/forbidden.html'), 403);

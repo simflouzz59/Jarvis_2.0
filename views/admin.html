@@ -20,27 +20,31 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Jarvis_2.0-Admin</a>
+                <a class="navbar-brand">Jarvis_2.0-Admin</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li id="navAction" class="active" onclick="showActionSearch()"><a>Actions</a></li>
-                    <li id="navUser" onclick="showUserSearch()"><a href="#">Users</a></li>
+                    <li id="navUser" onclick="showUserSearch()"><a>Users</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div id="advancedActionSearchModal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-sm">
+    <div id="actionCreateModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Modal Header</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Some text in the modal.</p>
+                    <form id="actionCreateForm" class="form">
+                        <input type="text" class="form-control" placeholder="actionName" name="actionName">
+                        <textarea class="form-control" placeholder="actionLibelle" name="actionLibelle"></textarea>
+                    </form>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-default" onclick="createAction()">Create</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -50,7 +54,7 @@
         <form id="actionSearchForm" class="form-inline">
             <input type="search" class="form-control" oninput="actionSearch()" placeholder="actionName" name="actionName">
         </form>
-        <button class="btn btn-default" data-toggle="modal" data-target="#advancedActionSearchModal">Advanced</button>
+        <button class="btn btn-default left" data-toggle="modal" data-target="#actionCreateModal">Create</button>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -65,21 +69,17 @@
     </div>
     <div id="actionContainer" class="container">
         <form id="actionUpdateForm" class="form">
-            <input type="hidden" name="actionSelected">
+            <input type="hidden" name="actionId">
             <input type="text" class="form-control" id="actionName" placeholder="actionName" name="actionName">
             <textarea class="form-control" id="actionLibelle" placeholder="actionLibelle" name="actionLibelle"></textarea>
         </form>
-        <button type="submit" class="btn btn-default">Update</button>
-        <button type="button" class="btn btn-danger">Delete</button>
+        <button type="submit" class="btn btn-default" onclick="updateAction()">Update</button>
+        <button type="button" class="btn btn-danger" onclick="deleteAction()">Delete</button>
         <div id="wordActionList">
             <form id="wordActionSearchForm" class="form form-inline">
-                <input type="hidden" name="actionSelected">
+                <input type="hidden" name="actionId">
                 <input type="search" class="form-control" oninput="wordActionSearch()" name="wordLibelle" placeholder="wordLibelle">
-                <select class="form-control" id="sel1">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
+                <select class="form-control lang-select">
                 </select>
             </form>
             <button type="button" class="btn btn-default float-right">Add</button>
@@ -96,9 +96,9 @@
         </div>
         <div id="contextMenuWord">
             <ul class="dropdown-menu" role="menu">
-                <li><a tabindex="-1" href="#">Edit word</a></li>
-                <li><a tabindex="-1" href="#">Remove action link</a></li>
-                <li><a tabindex="-1" href="#">Remove word</a></li>
+                <li><a tabindex="-1">Edit word</a></li>
+                <li><a tabindex="-1">Remove action link</a></li>
+                <li><a tabindex="-1">Remove word</a></li>
             </ul>
         </div>
     </div>
@@ -120,9 +120,9 @@
         </table>
         <div id="contextMenuUser">
             <ul class="dropdown-menu" role="menu">
-                <li><a tabindex="-1" href="#">Edit word</a></li>
-                <li><a tabindex="-1" href="#">Remove action link</a></li>
-                <li><a tabindex="-1" href="#">Remove word</a></li>
+                <li><a tabindex="-1">Edit word</a></li>
+                <li><a tabindex="-1">Remove action link</a></li>
+                <li><a tabindex="-1">Remove word</a></li>
             </ul>
         </div>
     </div>
